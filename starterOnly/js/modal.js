@@ -22,8 +22,13 @@ modalBtn.forEach((btn) => btn.addEventListener("click", () =>  modalbg.style.dis
 const closeBtn = document.querySelector(".close");
 closeBtn.addEventListener("click", () => modalbg.style.display = "none");
 
+// closeBtn.addEventListener("click", exitBtn) 
+// function exitBtn() {
+//   modalbg.style.display = "none";
+// }
 
 // form elements
+//collected item from the form
 const firstNameField = document.getElementById("first");
 const lastNameField  = document.getElementById("last");
 const emailField = document.getElementById("email");
@@ -34,6 +39,7 @@ const conditionsBtn = document.getElementById('checkbox1');
 
 
 // validate form elements
+//two type of event: 1)input (show error all the time) and 2)change (only show the error when user leave the input)
 firstNameField.addEventListener('change', () => checkName(firstNameField, message.name));
 lastNameField.addEventListener('change', () => checkName(lastNameField, message.name));
 emailField.addEventListener('change', () => checkEmail(emailField, message.email));
@@ -53,6 +59,8 @@ const message = {
 };
 
 // check name lenght (min=2)
+//trim to not count the space
+
 const checkName = (element, msg) => {
   const name = element.value.trim();
   if (name.length < 2) {
@@ -64,7 +72,7 @@ const checkName = (element, msg) => {
 }
 
 // check email simply using regular expression RegExp\
-// old version: using Constraint Validation API: element.validity.typeMismatch
+
 const checkEmail = (element, msg) => {
   const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
   if (!emailRegExp.test(element.value)) {
@@ -76,11 +84,15 @@ const checkEmail = (element, msg) => {
 }
 
 
-// check if date is valid or no
+// check if date is valid or no, and if it is older than 18
 // empty is also invalid (because of required?)
 const checkBirthdate = (element, msg) => {
   const birthdate = new Date(element.value);
-  if (isNaN(birthdate) || (element.value.toString().length !== 10)) {
+
+  const today = new Date(); // today
+  today.setFullYear(today.getFullYear() - 18); // today but -18 years
+
+  if (birthdate > today || isNaN(birthdate) || (element.value.toString().length !== 10)) {
       setErrorMessage(element, msg);
       return false;
   } 
@@ -91,12 +103,9 @@ const checkBirthdate = (element, msg) => {
 // check quantity value (between 0 and 99)
 // TODO need to add check for invalid inputs (string, empty)
 const checkQuantity = (element, msg) => {
-  // const qty = element.value;
-  const qtyRegExp = new RegExp("[0-9]{1,2}");
-
-  // const regexQuantity = /^([0-9]{1,2})$/;
+  // const qtyRegExp = new RegExp("([0-9]{1,2})");
+  const qtyRegExp = /^(?:99|\d{1,2})$/;
   if(!qtyRegExp.test(element.value)){
-  // if (qty>99 || qty<0 || isNaN(parseInt(qty))) {
     setErrorMessage(element, msg);
     return false;
   }
@@ -104,6 +113,16 @@ const checkQuantity = (element, msg) => {
   return true;
 }
 
+// to avoid user from entering anything but number in firefox
+
+// prevent default = the method of the Event interface tells the user agent that if the event does not get explicitly handled, its default action should not be taken as it normally would be.
+ 
+quantityField.addEventListener("keypress", (event) => {
+  const numberRegExp = new RegExp("[0-9]");
+  if(!numberRegExp.test(event.key)){
+    event.preventDefault()
+  }    
+});
 // check if a city is chosen
 const checkCity = (element, msg) => {
   // create array for all buttons and check if any is checked
