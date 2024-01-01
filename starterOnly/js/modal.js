@@ -50,12 +50,12 @@ conditionsBtn.addEventListener('change', () => checkConditions(conditionsBtn, me
 
 
 const message = {
-  name: "The name should at least have 2 characters.",
-  email: "The email address is not valid.",
-  birthdate : "Please enter a valid birthdate.",
-  quantity: "It should be between 0 and 99.",
-  city: "Please choose one city.",
-  conditions: "Please accept the conditions."
+  name: "Votre nom doit comporter au moins 2 caractères.",
+  email: "Veuillez saisir une adresse email valide.",
+  birthdate : "Veuillez saisir une date de naissance valide et elle doit être âgée d'au moins 18 ans.",
+  quantity: "La quantité doit être uniquement un chiffre entre 0 et 99.",
+  city: "Veuillez choisir une choix de ville.",
+  conditions: "Veuillez accepter les conditions."
 };
 
 // check name lenght (min=2)
@@ -174,7 +174,7 @@ form.addEventListener("submit", (event) => {
      
     if (formIsValid) {
       // reset form, inform user, close form
-      alert("You are succesfully registered!");
+      alert("Merci ! Votre réservation a été reçue.");
       form.reset();
       modalbg.style.display = "none"
     }
