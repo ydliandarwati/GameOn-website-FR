@@ -159,7 +159,7 @@ const hideErrorMessage = element => {
 
 
 // submitting form
-form.addEventListener("submit", (event) => {
+form.addEventListener("submit", (event) =>  {
     // On empêche le comportement par défaut
     event.preventDefault();
     const firstnameValid  = checkName(firstNameField, message.name);
@@ -170,7 +170,7 @@ form.addEventListener("submit", (event) => {
     const cityValid       = checkCity(cityBtn, message.city);
     const conditionsValid = checkConditions(conditionsBtn, message.conditions);
     const formIsValid = firstnameValid && lastnameValid && emailValid 
-     && birthdateValid && quantityValid && cityValid & conditionsValid;
+     && birthdateValid && quantityValid && cityValid && conditionsValid;
      
     if (formIsValid) {
       // reset form, inform user, close form
@@ -178,8 +178,8 @@ form.addEventListener("submit", (event) => {
       form.reset();
       modalbg.style.display = "none"
     }
-
-  });
+  }
+);
 
 
 
