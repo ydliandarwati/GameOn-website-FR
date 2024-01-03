@@ -18,7 +18,7 @@ modalBtn.forEach((btn) => btn.addEventListener("click", () =>  modalbg.style.dis
 
 // ======================================= //
 
-// select close button and hide form after click
+// select close button and hide the form after click
 const closeBtn = document.querySelector(".close");
 closeBtn.addEventListener("click", () => modalbg.style.display = "none");
 
@@ -37,6 +37,15 @@ const quantityField = document.getElementById('quantity');
 const cityBtn = document.querySelectorAll("input[name='location']");
 const conditionsBtn = document.getElementById('checkbox1');
 
+const message = {
+  name: "Votre nom doit comporter au moins 2 caractères.",
+  email: "Veuillez saisir une adresse email valide.",
+  birthdate : "Veuillez saisir une date de naissance valide et elle doit être âgée d'au moins 18 ans.",
+  quantity: "La quantité doit être uniquement un chiffre entre 0 et 99.",
+  city: "Veuillez choisir une choix de ville.",
+  conditions: "Veuillez accepter les conditions."
+};
+
 
 // validate form elements
 //two type of event: 1)input (show error all the time) and 2)change (only show the error when user leave the input)
@@ -49,21 +58,12 @@ cityBtn.forEach(btn => btn.addEventListener('change', () => checkCity(cityBtn, m
 conditionsBtn.addEventListener('change', () => checkConditions(conditionsBtn, message.conditions));
 
 
-const message = {
-  name: "Votre nom doit comporter au moins 2 caractères.",
-  email: "Veuillez saisir une adresse email valide.",
-  birthdate : "Veuillez saisir une date de naissance valide et elle doit être âgée d'au moins 18 ans.",
-  quantity: "La quantité doit être uniquement un chiffre entre 0 et 99.",
-  city: "Veuillez choisir une choix de ville.",
-  conditions: "Veuillez accepter les conditions."
-};
-
-// check name lenght (min=2)
-//trim to not count the space
-
+// check name length (min=2) (no number or special characters)
+// trim to not count the space
 const checkName = (element, msg) => {
   const name = element.value.trim();
-  if (name.length < 2) {
+  const nameRegExp = new RegExp("[a-zA-ZÀ-ÿ-]{2,20}")
+  if (!nameRegExp.test(name)) {
     setErrorMessage(element, msg);
     return false;
   }
@@ -71,8 +71,7 @@ const checkName = (element, msg) => {
   return true;
 }
 
-// check email simply using regular expression RegExp\
-
+// check email simply using regular expression (RegExp)
 const checkEmail = (element, msg) => {
   const emailRegExp = new RegExp("[a-z0-9._-]+@[a-z0-9._-]+\.[a-z0-9._-]+");
   if (!emailRegExp.test(element.value)) {
@@ -103,7 +102,7 @@ const checkBirthdate = (element, msg) => {
 // check quantity value (between 0 and 99)
 // TODO need to add check for invalid inputs (string, empty)
 const checkQuantity = (element, msg) => {
-  // const qtyRegExp = new RegExp("([0-9]{1,2})");
+  // const qtyRegExp = new RegExp("?:99|\d{1,2}");
   const qtyRegExp = /^(?:99|\d{1,2})$/;
   if(!qtyRegExp.test(element.value)){
     setErrorMessage(element, msg);
@@ -174,7 +173,7 @@ form.addEventListener("submit", (event) =>  {
      
     if (formIsValid) {
       // reset form, inform user, close form
-      alert("Merci ! Votre réservation a été reçue.");
+      alert("Merci ! Votre registration a été reçue.");
       form.reset();
       modalbg.style.display = "none"
     }
