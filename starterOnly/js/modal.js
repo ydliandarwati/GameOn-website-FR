@@ -9,6 +9,7 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground"); // hidden form
+const modalSubmitted = document.querySelector(".confirm_modal");  
 const modalBtn = document.querySelectorAll(".modal-btn"); // register btn
 const formData = document.querySelectorAll(".formData"); // form fields
 const form = document.querySelector('form'); // form container
@@ -70,6 +71,21 @@ const checkName = (element, msg) => {
   hideErrorMessage(element);
   return true;
 }
+
+//avoid number in first name and last name
+firstNameField.addEventListener("keypress", (event) => {
+  const nameRegExp = new RegExp("[a-zA-ZÀ-ÿ-]");
+  if(!nameRegExp.test(event.key)){
+    event.preventDefault()
+  }    
+});
+
+lastNameField.addEventListener("keypress", (event) => {
+  const nameRegExp = new RegExp("[a-zA-ZÀ-ÿ-]");
+  if(!nameRegExp.test(event.key)){
+    event.preventDefault()
+  }    
+});
 
 // check email simply using regular expression (RegExp)
 const checkEmail = (element, msg) => {
@@ -173,12 +189,16 @@ form.addEventListener("submit", (event) =>  {
      
     if (formIsValid) {
       // reset form, inform user, close form
-      alert("Merci ! Votre registration a été reçue.");
-      form.reset();
-      modalbg.style.display = "none"
+      modalbg.style.display = "none";
+      modalSubmitted.style.display = 'flex';
+      // form.reset();
     }
   }
 );
+
+// close success message
+document.querySelector('.confirm-modal-btn').addEventListener('click', () => modalSubmitted.style.display = "none");
+document.querySelector('.confirm-close').addEventListener('click', () => modalSubmitted.style.display = "none");
 
 
 
